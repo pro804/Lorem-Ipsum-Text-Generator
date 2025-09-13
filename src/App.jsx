@@ -1,5 +1,31 @@
+import { useState } from "react";
+
 const App = () => {
-  return <h1>Lorem Ipsum Text Generator</h1>;
+  const [count, setCount] = useState(1);
+
+  return (
+    <section className="section-center">
+      <h4>tired of boring lorem ipsum?</h4>
+      <form className="lorem-form">
+        <label htmlFor="amout">paragraphs:</label>
+        <input
+          type="number"
+          name="amount"
+          id="amount"
+          min="1"
+          max="8"
+          step="1"
+          value={count}
+          onChange={(e) => {
+            setCount(e.target.value);
+          }}
+        />
+        <button className="btn" type="submit">
+          generate
+        </button>
+      </form>
+    </section>
+  );
 };
 
 export default App;
