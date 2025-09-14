@@ -19,6 +19,7 @@ const Form = ({ type, setType, count, setCount, isLoading }) => {
         name="amount"
         id="amount"
         min="1"
+        max={type === "paragraphs" ? "9" : "30"}
         step="1"
         value={count}
         onChange={(e) => {
