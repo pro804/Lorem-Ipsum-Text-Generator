@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { textGenerators } from "./utils/textGenerators";
 import Form from "./components/Form";
+import CopyTextButton from "./components/CopyTextButton";
 
 const App = () => {
   const [count, setCount] = useState(1);
@@ -54,19 +55,7 @@ const App = () => {
       />
       <article className="lorem-text">
         {text.length > 0 && (
-          <div className="copy-container">
-            <button
-              className={`btn copy-btn ${isCopied ? "copied" : ""}`}
-              onClick={copyText}
-              disabled={isCopied}
-              aria-live="polite"
-              aria-label={
-                isCopied ? "Text copied to clipboard" : "Copy text to clipboard"
-              }
-            >
-              {isCopied ? "Copied!" : "Copy Text"}
-            </button>
-          </div>
+          <CopyTextButton isCopied={isCopied} copyText={copyText} />
         )}
         {type === "words" && text.length > 0 ? (
           <p>{text.join(" ")}</p>
