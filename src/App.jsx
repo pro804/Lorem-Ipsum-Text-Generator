@@ -1,20 +1,7 @@
 import { useEffect, useState } from "react";
-import data from "../src/data";
 import { nanoid } from "nanoid";
-
-const textGenerators = {
-  paragraphs: (amount) => data.slice(0, amount),
-  sentences: (amount) => {
-    const allSentences = data.flatMap((paragraph) =>
-      paragraph.split(". ").filter((sentence) => sentence.length > 0)
-    );
-    return allSentences.slice(0, amount);
-  },
-  words: (amount) => {
-    const allWords = data.flatMap((paragraph) => paragraph.split(" "));
-    return allWords.slice(0, amount);
-  },
-};
+import { textGenerators } from "./utils/textGenerators";
+import Form from "./components/Form";
 
 const App = () => {
   const [count, setCount] = useState(1);
@@ -39,37 +26,15 @@ const App = () => {
   return (
     <section className="section-center" onSubmit={handleSubmit}>
       <h4>tired of boring lorem ipsum?</h4>
-      <form className="lorem-form">
-        <label htmlFor="amount">
-          <select
-            value={type}
-            onChange={(e) => {
-              setType(e.target.value);
-            }}
-            className="select-container"
-          >
-            <option value="paragraphs">Paragraphs</option>
-            <option value="sentences">Sentences</option>
-            <option value="words">Words</option>
-          </select>
-        </label>
-        <input
-          type="number"
-          name="amount"
-          id="amount"
-          min="1"
-          step="1"
-          value={count}
-          onChange={(e) => {
-            setCount(e.target.value);
-          }}
-        />
-        <button className="btn" type="submit" disabled={isLoading}>
-          {isLoading ? "Generating..." : "Generate"}
-        </button>
-      </form>
+      <Form
+        type={type}
+        setType={setType}
+        count={count}
+        setCount={setCount}
+        isLoading={isLoading}
+      />
       <article className="lorem-text">
-        {type === "words" ? (
+        {type === "words" && text.length > 0 ? (
           <p>{text.join(" ")}</p>
         ) : (
           text.map((item) => {
