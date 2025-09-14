@@ -8,6 +8,7 @@ const App = () => {
   const [text, setText] = useState([]);
   const [type, setType] = useState("paragraphs");
   const [isLoading, setIsLoading] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,13 +17,31 @@ const App = () => {
     setTimeout(() => {
       setText(textGenerators[type](amount));
       setIsLoading(false);
+      setIsCopied(false);
     }, 500);
+  };
+
+  const copyText = async () => {
+    let textToCopy = "";
+    if (type === "words") {
+      textToCopy = text.join(" ");
+    } else if (type === "sentences") {
+      textToCopy = text.map((item) => item + ".").join("\n\n");
+    } else {
+      textToCopy = text.join("\n\n");
+    }
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (error) {
+      console.log("Failed to copy text: ", error);
+    }
   };
 
   useEffect(() => {
     setText([]);
   }, [type]);
-
   return (
     <section className="section-center" onSubmit={handleSubmit}>
       <h4>tired of boring lorem ipsum?</h4>
@@ -34,6 +53,21 @@ const App = () => {
         isLoading={isLoading}
       />
       <article className="lorem-text">
+        {text.length > 0 && (
+          <div className="copy-container">
+            <button
+              className={`btn copy-btn ${isCopied ? "copied" : ""}`}
+              onClick={copyText}
+              disabled={isCopied}
+              aria-live="polite"
+              aria-label={
+                isCopied ? "Text copied to clipboard" : "Copy text to clipboard"
+              }
+            >
+              {isCopied ? "Copied!" : "Copy Text"}
+            </button>
+          </div>
+        )}
         {type === "words" && text.length > 0 ? (
           <p>{text.join(" ")}</p>
         ) : (
