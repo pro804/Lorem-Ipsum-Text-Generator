@@ -168,3 +168,5 @@ npm run dev
 ## 📄 License
 
 This project was created for educational purposes as part of a React learning journey. The original design was provided by course materials, with extensions and enhancements implemented independently.
+
+This project is licensed under the MIT License.See the [LICENSE](LICENSE) file for details.
